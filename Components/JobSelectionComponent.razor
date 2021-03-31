@@ -1,0 +1,56 @@
+﻿@using FinalFantasyTacticsPartyBuilderBlazor.ViewModels
+@using FinalFantasyTacticsPartyBuilderBlazor.Services
+
+@inject JavascriptService javascriptService
+@inject DataAccessService dataAccessService
+
+<div id="job-selection-container" style="transform: rotate(@(rotationDelta)deg)">
+    @if (Jobs != null)
+    {
+        for (int i = 0; i < Jobs.Count; i++)
+        {
+            int currentJobIndex = i;
+            JobOverviewViewModel job = Jobs[i];
+            <div class="job-selection-node job-node-@(i + 1) @(SelectedJobData.JobPosition == currentJobIndex ? "selected-job-node" : "")"
+                 style="transform: rotate(@((16.36 * (currentJobIndex + 5) - 10))deg) skew(73.64deg)">
+                <img src="/img/Jobs/@(job.FileName)_@(job.Gender)_Standing.png"
+                     @onclick="async () => await SetSelectedJobDataAsync(new SelectedJobDataViewModel { JobID = job.JobID, GenderID = job.GenderID, JobPosition = currentJobIndex })"
+                     style="transform: skew(-73.64deg) rotate(@((16.36 * -1 * (currentJobIndex + 5) + 10) - rotationDelta)deg)" />
+            </div>
+        }
+    }
+</div>
+
+@code {
+
+    [Parameter]
+    public List<JobOverviewViewModel> Jobs { get; set; }
+
+    private SelectedJobDataViewModel SelectedJobData = new SelectedJobDataViewModel { GenderID = 0, JobID = 1, JobPosition = 0 };
+    private float rotationDelta = 0;
+
+    public SelectedJobDataViewModel GetSelectedJobData()
+    {
+        return SelectedJobData;
+    }
+
+    public void SetSelectedJobGender(Enums.Gender genderID)
+    {
+        SelectedJobData.GenderID = (int)genderID;
+    }
+
+    public async Task SetSelectedJobDataAsync(SelectedJobDataViewModel jobData)
+    {
+        SelectedJobData = jobData;
+        await javascriptService.UpdateSelectedJobChartDataAsync(Jobs.Single(m => m.JobID == SelectedJobData.JobID));
+        rotationDelta = SelectedJobData.JobPosition * -16.36f;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await javascriptService.InitializeJobSelectionChartJavascriptAsync();
+        }
+    }
+}

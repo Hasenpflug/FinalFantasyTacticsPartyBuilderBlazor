@@ -1,0 +1,186 @@
+﻿@using FinalFantasyTacticsPartyBuilderBlazor.Services
+@using FinalFantasyTacticsPartyBuilderBlazor.ViewModels
+
+@page "/"
+@inject JavascriptService javascriptService
+@inject DataAccessService dataAccessService
+
+<div id="party-builder-container">
+    @if (Units != null)
+    {
+        for (int i = 0; i < Units.Count; i++)
+        {
+            int unitPosition = i;
+            <div class="unit-container" @onclick="async () => await SetSelectedUnitAsync(unitPosition)" data-unit-position="@i">
+                <img src="/img/selection-square.png" class="selection-square" />
+                <a href="javascript:void(0);" class="unit-selector">
+                    <img class="job-blue-orb" src="/img/blue_orb.png" />
+                    <img class="job-image" src="/img/Jobs/@(Units[i].JobName)_@(Units[i].Gender)_Standing.png" />
+                    <div class="job-status-container">
+                        <div class="job-status-hp-container">
+                            <div class="hp-bar"></div>
+                            <img class="hp" src="/img/hp.png" />
+                            <div class="upper-hp-values-container">
+                                @for (int j = 0; j < Units[i].HpDigits.Length; j++)
+                                {
+                                    <img class="value upper-hp" src="/img/number_@(Units[i].HpDigits[j]).png" />
+                                }
+                            </div>
+                            <img class="job-status-divider" src="/img/divider.png" />
+                            <div class="lower-hp-values-container">
+                                @for (int j = 0; j < Units[i].HpDigits.Length; j++)
+                                {
+                                    <img class="value lower-hp" src="/img/number_@(Units[i].HpDigits[j]).png" />
+                                }
+                            </div>
+                        </div>
+                        <div class="job-status-mp-container">
+                            <div class="mp-bar"></div>
+                            <img class="mp" src="/img/mp.png" />
+                            <div class="upper-mp-values-container">
+                                @for (int j = 0; j < Units[i].MpDigits.Length; j++)
+                                {
+                                    <img class="value upper-mp" src="/img/number_@(Units[i].MpDigits[j]).png" />
+                                }
+                            </div>
+                            <img class="job-status-divider" src="/img/divider.png" />
+                            <div class="lower-mp-values-container">
+                                @for (int j = 0; j < Units[i].MpDigits.Length; j++)
+                                {
+                                    <img class="value lower-mp" src="/img/number_@(Units[i].MpDigits[j]).png" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                @if (CurrentUnitMenuModalIndex == i)
+                {
+                    @if (ShouldShowMenuModal)
+                    {
+                        <div class="menu-container">
+                            <img src="/img/menu_header.png" />
+                            <div class="menu">
+                                <ul>
+                                    <li id="menu-unit-item"><a href="/unitDetails/@i">Item</a></li>
+                                    <li id="menu-unit-ability" class="not-implemented"><a href="javascript:void(0);">Ability</a></li>
+                                    <li id="menu-unit-change-job" class="not-implemented"><a href="javascript:void(0);">Change Job</a></li>
+                                    <li id="menu-unit-remove"><a href="javascript:void(0);" @onclick="async () => await SetShouldShowDismissModalAsync(true)">Remove Unit</a></li>
+                                    <li id="menu-unit-cancel"><a href="javascript:void(0);" @onclick="() => { ShouldShowMenuModal = false; ShouldShowUnitStatusPanel = false; }" @onclick:stopPropagation="true">Cancel</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        @if (ShouldShowDismissModal && UnitDismiss != null)
+                        {
+                            <div id="unit-dismiss-container">
+                                <div id="dismiss-portrait-container" class="menu">
+                                    <span class="row-header" id="dismiss-name">@UnitDismiss.UnitName</span>
+                                    <img id="dismiss-portrait" src="@UnitDismiss.JobPortraitPath" />
+                                    <span id="dismiss-quote">@UnitDismiss.Quote</span>
+
+                                </div>
+                                <div id="dismiss-confirmation-container" class="menu">
+                                    <span id="dismiss-unit" data-unit-position="@UnitDismiss.Position" @onclick="async () => await DismissUnitAsync()">Dismiss</span>
+                                    <span id="dismiss-cancel" @onclick="async () => await SetShouldShowDismissModalAsync(false)">Cancel</span>
+                                </div>
+                            </div>
+                        }
+                    }
+                    @if (ShouldShowUnitStatusPanel)
+                    {
+                        <UnitOverviewStatusComponent Unit="UnitOverview" />
+                    }
+                }
+            </div>
+        }
+    }
+
+    <div class="unit-container">
+        <img class="job-blue-orb" src="/img/blue_orb.png" />
+        <div id="empty-unit-outline">
+            <a href="/newunit">
+                <div id="new-unit-cross-container">
+                    <img src="/img/plus-sign.svg" />
+                </div>
+            </a>
+        </div>
+
+    </div>
+</div>
+
+@code {
+
+    UnitDismissViewModel UnitDismiss;
+    UnitOverviewViewModel UnitOverview;
+    public List<UnitOverviewPanelViewModel> Units;
+
+    public int CurrentUnitMenuModalIndex = -1;
+    public bool ShouldShowDismissModal = false;
+    public bool ShouldShowMenuModal = false;
+    public bool ShouldShowUnitStatusPanel = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Units = await javascriptService.GetUnitPanelDataAsync();
+
+            if (Units == null)
+            {
+                await javascriptService.SetInitialUnitDataAsync();
+            }
+
+            Units = await javascriptService.GetUnitPanelDataAsync();
+            foreach (UnitOverviewPanelViewModel unit in Units)
+            {
+                unit.JobName = Enum.GetName(typeof(Enums.Jobs), unit.JobID);
+                unit.JobName = unit.JobName.Contains("Onion") ? "OnionKnight" : unit.JobName;
+                unit.HpDigits = unit.MaxHP.ToString().ToCharArray();
+                unit.MpDigits = unit.MaxMP.ToString().ToCharArray();
+            }
+
+            StateHasChanged();
+        }
+    }
+
+    public async Task SetSelectedUnitAsync(int unitIndex)
+    {
+        CurrentUnitMenuModalIndex = unitIndex;
+        UnitOverview = dataAccessService.GetUnitOverviewData((await javascriptService.GetUnitDataAsync())[unitIndex].Unit);
+        ShouldShowUnitStatusPanel = true;
+        ShouldShowMenuModal = true;
+    }
+
+    public async Task SetShouldShowDismissModalAsync(bool shouldShow)
+    {
+        if (shouldShow)
+        {
+            UnitDetailsViewModel unit = (await javascriptService.GetUnitDataAsync())[CurrentUnitMenuModalIndex];
+
+            UnitDismiss = new UnitDismissViewModel
+            {
+                Gender = unit.Unit.Gender,
+                GenderName = unit.Unit.GenderName,
+                JobID = unit.Unit.JobID,
+                Position = CurrentUnitMenuModalIndex,
+                UnitName = unit.Unit.UnitName
+            };
+
+            UnitDismiss = await dataAccessService.GetUnitDismissDataAsync(UnitDismiss);
+            ShouldShowDismissModal = true;
+        }
+        else
+        {
+            ShouldShowDismissModal = false;
+        }
+    }
+
+    public async Task DismissUnitAsync()
+    {
+        await javascriptService.RemoveUnitDataAsync(CurrentUnitMenuModalIndex);
+        ShouldShowDismissModal = false;
+        UnitDismiss = null;
+        ShouldShowMenuModal = false;
+        ShouldShowUnitStatusPanel = false;
+        Units.RemoveAt(CurrentUnitMenuModalIndex);
+    }
+}

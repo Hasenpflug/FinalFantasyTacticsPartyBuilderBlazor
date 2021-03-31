@@ -1,0 +1,18 @@
+[
+  {
+    "outputFileName": "wwwroot/css/fftpartybuildertools.css",
+    "inputFiles": [
+      "wwwroot/css/site.css",
+      "wwwroot/css/Treant.css",
+      "wwwroot/fonts/webfont.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/fftpartybuildertools.js",
+    "inputFiles": [
+      "wwwroot/js/JobOverview.js",
+      "wwwroot/js/Chart.bundle.min.js",
+      "wwwroot/js/Treant.js"
+    ]
+  }
+]

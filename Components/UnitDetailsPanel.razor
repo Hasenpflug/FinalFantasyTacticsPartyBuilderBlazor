@@ -1,0 +1,350 @@
+﻿@using FinalFantasyTacticsPartyBuilderBlazor.Services;
+@using FinalFantasyTacticsPartyBuilderBlazor.ViewModels;
+
+@page "/unitDetails/{UnitIndex:int}"
+@inject DataAccessService dataAccessService
+@inject JavascriptService javascriptService
+
+@if (UnitDetails != null)
+{
+    <a id="navigator-previous" href="/">
+        <img src="/img/return.svg" />
+    </a>
+    <div id="unit-details-container">
+        <UnitOverviewStatusComponent Unit="UnitDetails.Unit" />
+        <div id="unit-details-overall-stats" class="menu">
+            <div id="unit-details-stats-container">
+                <div id="base-stats-container">
+                    <span>Move</span>
+                    <span>...</span>
+                    <span id="move-stat-value" data-item-default-move="@UnitDetails.Move">@UnitDetails.Move</span>
+                    <span>Jump</span>
+                    <span>...</span>
+                    <span id="jump-stat-value" data-item-default-jump="@UnitDetails.Jump">@UnitDetails.Jump</span>
+                    <span>Speed</span>
+                    <span>...</span>
+                    <span id="speed-stat-value" data-item-default-speed="@UnitDetails.Speed">@UnitDetails.Speed</span>
+                </div>
+                <div id="weapon-stats-container">
+                    <span id="weapon-stats-header">Weap. Power</span>
+                    <span>R</span>
+                    <span>...</span>
+                    <span id="weapon-stats-right-damage" data-item-power="@UnitDetails.WeaponRight.WeaponPower">@UnitDetails.WeaponRight.WeaponPower</span>
+                    <span>/</span>
+                    <span id="weapon-stats-right-hit" data-item-hit="@UnitDetails.WeaponRight.WeaponHit">@UnitDetails.WeaponRight.WeaponHit</span>
+                    <span>%</span>
+                    <span>L</span>
+                    <span>...</span>
+                    <span id="weapon-stats-left-damage" data-item-power="@UnitDetails.WeaponLeft.WeaponPower">@UnitDetails.WeaponLeft.WeaponPower</span>
+                    <span>/</span>
+                    <span id="weapon-stats-left-hit" data-item-hit="@UnitDetails.WeaponLeft.WeaponHit">@UnitDetails.WeaponLeft.WeaponHit</span>
+                    <span>%</span>
+                </div>
+            </div>
+            <div id="equipment-stats-container">
+                <span id="equipment-stats-at">AT</span>
+                <span id="equipment-stats-cev">C-EV</span>
+                <span id="equipment-stats-sev">S-EV</span>
+                <span id="equipment-stats-aev">A-EV</span>
+                <img src="/img/physical-icon.png" />
+                <span id="physical-attack-power" data-item-power="@UnitDetails.PhysicalAttackPower">@UnitDetails.PhysicalAttackPower</span>
+                <span>/</span>
+                <span>@UnitDetails.PhysicalCharacterEvade</span>
+                <span>%</span>
+                <span>/</span>
+                <span id="shield-stats-physical-evade" data-item-physical-evade="@UnitDetails.PhysicalShieldEvade">@UnitDetails.PhysicalShieldEvade</span>
+                <span>%</span>
+                <span>/</span>
+                <span id="accessory-physical-evade" data-item-physical-evade="@UnitDetails.PhysicalAccessoryEvade">@UnitDetails.PhysicalAccessoryEvade</span>
+                <span>%</span>
+                <img src="/img/magical-icon.png" />
+                <span id="magical-attack-power" data-item-power="@UnitDetails.MagicalAttackPower">@UnitDetails.MagicalAttackPower</span>
+                <span>/</span>
+                <span>@UnitDetails.MagicalCharacterEvade</span>
+                <span>%</span>
+                <span>/</span>
+                <span id="shield-stats-magical-evade" data-item-magical-evade="@UnitDetails.MagicalShieldEvade">@UnitDetails.MagicalShieldEvade</span>
+                <span>%</span>
+                <span>/</span>
+                <span id="accessory-magical-evade" data-item-magical-evade="@UnitDetails.MagicalAccessoryEvade">@UnitDetails.MagicalAccessoryEvade</span>
+                <span>%</span>
+            </div>
+            <div id="damage-resist-container">
+                <span id="damage-resistances-header">Damage Resistances</span>
+                <div id="damage-resistances-first-row" class="fft-tooltip">
+                    <span class="fft-tooltip-container top">Fire - @UnitDetails.Resistances.FireResist damage</span>
+                    <img class="element-icon element-icon-@(UnitDetails.Resistances.FireResist.ToLower())" src="/img/Elemental_Status_Icons/flame.svg" />
+                </div>
+                <div class="fft-tooltip">
+                    <span class="fft-tooltip-container top">Ice - @UnitDetails.Resistances.IceResist damage</span>
+                    <img class="element-icon element-icon-@(UnitDetails.Resistances.IceResist.ToLower())" src="/img/Elemental_Status_Icons/gem.svg" />
+                </div>
+                <div class="fft-tooltip">
+                    <span class="fft-tooltip-container top">Lightning - @UnitDetails.Resistances.LightningResist damage</span>
+                    <img class="element-icon element-icon-@(UnitDetails.Resistances.LightningResist.ToLower())" src="/img/Elemental_Status_Icons/flash.svg" />
+                </div>
+                <div class="fft-tooltip">
+                    <span class="fft-tooltip-container top">Water - @UnitDetails.Resistances.WaterResist damage</span>
+                    <img class="element-icon element-icon-@(UnitDetails.Resistances.WaterResist.ToLower())" src="/img/Elemental_Status_Icons/drop.svg" />
+                </div>
+                <div class="fft-tooltip">
+                    <span class="fft-tooltip-container top">Physical - @UnitDetails.Resistances.PhysicalResist damage</span>
+                    <img class="element-icon element-icon-@(UnitDetails.Resistances.PhysicalResist.ToLower())" src="/img/physical-icon.png" />
+                </div>
+                <div id="damage-resistances-second-row" class="fft-tooltip">
+                    <span class="fft-tooltip-container bottom">Wind - @UnitDetails.Resistances.WindResist damage</span>
+                    <img class="element-icon element-icon-@(UnitDetails.Resistances.WindResist.ToLower())" src="/img/Elemental_Status_Icons/wind.svg" />
+                </div>
+                <div class="fft-tooltip">
+                    <span class="fft-tooltip-container bottom">Earth - @UnitDetails.Resistances.EarthResist damage</span>
+                    <img class="element-icon element-icon-@(UnitDetails.Resistances.EarthResist.ToLower())" src="/img/Elemental_Status_Icons/landslide.svg" />
+                </div>
+                <div class="fft-tooltip">
+                    <span class="fft-tooltip-container bottom">Holy - @UnitDetails.Resistances.HolyResist damage</span>
+                    <img class="element-icon element-icon-@(UnitDetails.Resistances.HolyResist.ToLower())" src="/img/Elemental_Status_Icons/holy-star.svg" />
+                </div>
+                <div class="fft-tooltip">
+                    <span class="fft-tooltip-container bottom">Dark - @UnitDetails.Resistances.DarkResist damage</span>
+                    <img class="element-icon element-icon-@(UnitDetails.Resistances.DarkResist.ToLower())" src="/img/Elemental_Status_Icons/dark-night.svg" />
+                </div>
+                <div class="fft-tooltip">
+                    <span class="fft-tooltip-container bottom">Magical - @UnitDetails.Resistances.MagicalResist damage</span>
+                    <img class="element-icon element-icon-@(UnitDetails.Resistances.MagicalResist.ToLower())" src="/img/magical-icon.png" />
+                </div>
+            </div>
+            <div id="status-immunities-container">
+                <span id="status-immunities-header">Status Immunities</span>
+                <div id="status-immunities-first-row" class="fft-tooltip @(!UnitDetails.Resistances.IsBerserkImmune ? "invisible" : "")">
+                    <span class="fft-tooltip-container top">Berserk</span>
+                    <img src="/img/Status_Ailment_Icons/berserk.svg" />
+                </div>
+                <div class="fft-tooltip @(!UnitDetails.Resistances.IsSleepImmune ? "invisible" : "")">
+                    <span class="fft-tooltip-container top">Sleep</span>
+                    <img src="/img/Status_Ailment_Icons/sleep.svg" />
+                </div>
+                <div class="fft-tooltip @(!UnitDetails.Resistances.IsSilenceImmune ? "invisible" : "")">
+                    <span class="fft-tooltip-container top">Silence</span>
+                    <img src="/img/Status_Ailment_Icons/silence.svg" />
+                </div>
+                <div class="fft-tooltip @(!UnitDetails.Resistances.IsPoisonImmune ? "invisible" : "")">
+                    <span class="fft-tooltip-container top">Poison</span>
+                    <img src="/img/Status_Ailment_Icons/poison.svg" />
+                </div>
+                <div class="fft-tooltip @(!UnitDetails.Resistances.IsDoomImmune ? "invisible" : "")">
+                    <span class="fft-tooltip-container top">Doom</span>
+                    <img src="/img/Status_Ailment_Icons/doom.svg" />
+                </div>
+                <div class="fft-tooltip @(!UnitDetails.Resistances.IsTraitorImmune ? "invisible" : "")">
+                    <span class="fft-tooltip-container top">Traitor</span>
+                    <img src="/img/Status_Ailment_Icons/traitor.svg" />
+                </div>
+                <div class="fft-tooltip @(!UnitDetails.Resistances.IsKOImmune ? "invisible" : "")">
+                    <span class="fft-tooltip-container top">KO</span>
+                    <img src="/img/Status_Ailment_Icons/KO.svg" />
+                </div>
+                <div class="fft-tooltip @(!UnitDetails.Resistances.IsStoneImmune ? "invisible" : "")">
+                    <span class="fft-tooltip-container top">Stone</span>
+                    <img src="/img/Status_Ailment_Icons/stone.svg" />
+                </div>
+                <div class="fft-tooltip @(!UnitDetails.Resistances.IsConfusedImmune ? "invisible" : "")">
+                    <span class="fft-tooltip-container top">Confused</span>
+                    <img src="/img/Status_Ailment_Icons/confused.svg" />
+                </div>
+                <div id="status-immunities-second-row" class="fft-tooltip @(!UnitDetails.Resistances.IsToadImmune ? "invisible" : "")">
+                    <span class="fft-tooltip-container bottom">Toad</span>
+                    <img src="/img/Status_Ailment_Icons/frog.svg" fill-opacity="0.5" />
+                </div>
+                <div class="fft-tooltip @(!UnitDetails.Resistances.IsSlowImmune ? "invisible" : "")">
+                    <span class="fft-tooltip-container bottom">Slow</span>
+                    <img src="/img/Status_Ailment_Icons/slow.svg" />
+                </div>
+                <div class="fft-tooltip @(!UnitDetails.Resistances.IsStopImmune ? "invisible" : "")">
+                    <span class="fft-tooltip-container bottom">Stop</span>
+                    <img src="/img/Status_Ailment_Icons/stop.svg" />
+                </div>
+                <div class="fft-tooltip @(!UnitDetails.Resistances.IsDontMoveImmune ? "invisible" : "")">
+                    <span class="fft-tooltip-container bottom">Don't Move</span>
+                    <img src="/img/Status_Ailment_Icons/immobile.svg" />
+                </div>
+                <div class="fft-tooltip @(!UnitDetails.Resistances.IsDontActImmune ? "invisible" : "")">
+                    <span class="fft-tooltip-container bottom">Don't Act</span>
+                    <img src="/img/Status_Ailment_Icons/disabled.svg" />
+                </div>
+                <div class="fft-tooltip @(!UnitDetails.Resistances.IsBlindImmune ? "invisible" : "")">
+                    <span class="fft-tooltip-container bottom">Blind</span>
+                    <img src="/img/Status_Ailment_Icons/blind.svg" />
+                </div>
+                <div class="fft-tooltip @(!UnitDetails.Resistances.IsVampireImmune ? "invisible" : "")">
+                    <span class="fft-tooltip-container bottom">Vampire</span>
+                    <img src="/img/Status_Ailment_Icons/vampire.svg" />
+                </div>
+                <div class="fft-tooltip @(!UnitDetails.Resistances.IsUndeadImmune ? "invisible" : "")">
+                    <span class="fft-tooltip-container bottom">Undead</span>
+                    <img src="/img/Status_Ailment_Icons/zombie.svg" />
+                </div>
+                <div class="fft-tooltip @(!UnitDetails.Resistances.IsCharmImmune ? "invisible" : "")">
+                    <span class="fft-tooltip-container bottom">Charm</span>
+                    <img src="/img/Status_Ailment_Icons/charm.svg" />
+                </div>
+            </div>
+           
+        </div>
+    </div>
+    <!--<div id="unit-ability-equipment-container">
+        <div id="unit-equipment" class="menu">
+            <div id="unit-equipment-slot-icons" class="fft-column">
+                <div class="fft-cell">
+                    <img src="~/img/hand_right.png" />
+                </div>
+                <div class="fft-cell">
+                    <img src="~/img/hand_left.png" />
+                </div>
+                <div class="fft-cell">
+                    <img src="~/img/head.png" />
+                </div>
+                <div class="fft-cell">
+                    <img src="~/img/armour.png" />
+                </div>
+                <div class="fft-cell">
+                    <img src="~/img/accessory.png" />
+                </div>
+            </div>
+            <div id="unit-equipment-item-icons" class="fft-column">
+                <img id="equip-icon" src="~/img/equip.png" />
+                <div class="fft-cell">
+                    @if (UnitDetails.WeaponRight != null)
+                    {
+                        <img src="@UnitDetails.WeaponRight.ImagePath" />
+                    }
+                </div>
+                <div class="fft-cell">
+                    @if (UnitDetails.WeaponLeft != null)
+                    {
+                        <img src="@UnitDetails.WeaponLeft.ImagePath" />
+                    }
+                </div>
+                <div class="fft-cell">
+                    @if (UnitDetails.Head != null)
+                    {
+                        <img src="@UnitDetails.Head.ImagePath" />
+                    }
+                </div>
+                <div class="fft-cell">
+                    @if (UnitDetails.Body != null)
+                    {
+                        <img src="@UnitDetails.Body.ImagePath" />
+                    }
+                </div>
+                <div class="fft-cell">
+                    @if (UnitDetails.Accessory != null)
+                    {
+                        <img src="@UnitDetails.Accessory.ImagePath" />
+                    }
+                </div>
+            </div>
+            <div id="unit-equipment-item-names" class="fft-column">
+                <div id="weapon-equipped" class="fft-cell equipment-selector" data-equipment-category="@((int)Enums.EquipmentCategoriesList.Weapon)">
+                    @if (UnitDetails.WeaponRight != null)
+                    {
+                        <strong data-item-physical-bonus="@UnitDetails.WeaponRight.PhysicalAttackPower" data-item-magical-bonus="@UnitDetails.WeaponRight.MagicalAttackPower"
+                                data-item-speed-bonus="@UnitDetails.WeaponRight.SpeedBonus" data-item-power="@UnitDetails.WeaponRight.WeaponPower" data-item-hit-percentage="@UnitDetails.WeaponRight.WeaponHit">@UnitDetails.WeaponRight.Name</strong>
+                            }
+                </div>
+                <div id="shield-equipped" class="fft-cell equipment-selector" data-equipment-category="@((int)Enums.EquipmentCategoriesList.Shield)">
+                    @if (UnitDetails.WeaponLeft != null)
+                    {
+                        <strong data-item-physical-bonus="@UnitDetails.WeaponLeft.PhysicalAttackPower" data-item-magical-bonus="@UnitDetails.WeaponLeft.MagicalAttackPower"
+                                data-item-speed-bonus="@UnitDetails.WeaponLeft.SpeedBonus" data-item-power="@UnitDetails.WeaponLeft.WeaponPower" data-item-hit-percentage="@UnitDetails.WeaponLeft.WeaponHit"
+                                data-item-physical-evade="@UnitDetails.PhysicalShieldEvade" data-item-magical-evade="@UnitDetails.MagicalShieldEvade">@UnitDetails.WeaponLeft.Name</strong>
+                            }
+                </div>
+                <div id="head-equipped" class="fft-cell equipment-selector" data-equipment-category="@((int)Enums.EquipmentCategoriesList.Helmet)">
+                    @if (UnitDetails.Head != null)
+                    {
+                        <strong data-item-physical-bonus="@UnitDetails.Head.PhysicalAttackPower" data-item-magical-bonus="@UnitDetails.Head.MagicalAttackPower"
+                                data-item-speed-bonus="@UnitDetails.Head.SpeedBonus" data-item-helmet-hp-bonus="@UnitDetails.Head.HPBonus" data-item-helmet-mp-bonus="@UnitDetails.Head.MPBonus">@UnitDetails.Head.Name</strong>
+                            }
+                </div>
+                <div id="body-equipped" class="fft-cell equipment-selector" data-equipment-category="@((int)Enums.EquipmentCategoriesList.Armor)">
+                    @if (UnitDetails.Body != null)
+                    {
+                        <strong data-item-physical-bonus="@UnitDetails.Body.PhysicalAttackPower" data-item-magical-bonus="@UnitDetails.Body.MagicalAttackPower"
+                                data-item-speed-bonus="@UnitDetails.Body.SpeedBonus" data-item-body-hp-bonus="@UnitDetails.Body.HPBonus" data-item-body-mp-bonus="@UnitDetails.Body.MPBonus">@UnitDetails.Body.Name</strong>
+                            }
+                </div>
+                <div id="accessory-equipped" class="fft-cell equipment-selector" data-equipment-category="@((int)Enums.EquipmentCategoriesList.Accessory)">
+                    @if (UnitDetails.Accessory != null)
+                    {
+                        switch (UnitDetails.Accessory.ItemCategoryID)
+                        {
+                            case (int)Enums.ItemCategoriesList.Shoe:
+                                <strong data-item-physical-bonus="@UnitDetails.Accessory.PhysicalAttackPower" data-item-magical-bonus="@UnitDetails.Accessory.MagicalAttackPower"
+                                        data-item-speed-bonus="@UnitDetails.Accessory.SpeedBonus" data-item-move-bonus="@UnitDetails.Accessory.MoveBonus" data-item-jump-bonus="@UnitDetails.Accessory.JumpBonus">@UnitDetails.Accessory.Name</strong>
+                                        break;
+                                    case (int)Enums.ItemCategoriesList.Armguard:
+                                        <strong data-item-physical-bonus="@UnitDetails.Accessory.PhysicalAttackPower" data-item-magical-bonus="@UnitDetails.Accessory.MagicalAttackPower"
+                                                data-item-speed-bonus="@UnitDetails.Accessory.SpeedBonus">@UnitDetails.Accessory.Name</strong>
+                                                break;
+                                            case (int)Enums.ItemCategoriesList.Cloak:
+                                                <strong data-item-physical-bonus="@UnitDetails.Accessory.PhysicalAttackPower" data-item-magical-bonus="@UnitDetails.Accessory.MagicalAttackPower"
+                                                        data-item-speed-bonus="@UnitDetails.Accessory.SpeedBonus" data-item-physical-evade="@UnitDetails.Accessory.AccessoryPhysicalEvade" data-item-magical-evade="@UnitDetails.Accessory.AccessoryMagicalEvade">@UnitDetails.Accessory.Name</strong>
+                                                        break;
+                                                    default:
+                                                        <strong data-item-physical-bonus="@UnitDetails.Accessory.PhysicalAttackPower" data-item-magical-bonus="@UnitDetails.Accessory.MagicalAttackPower"
+                                                                data-item-speed-bonus="@UnitDetails.Accessory.SpeedBonus">@UnitDetails.Accessory.Name</strong>
+                                                                break;
+                                                        }
+                                                    }
+                </div>
+            </div>
+        </div>
+        <div id="unit-abilities" class="menu">
+            <div id="unit-ability-icons" class="fft-column">
+                <img id="ability-icon" src="~/img/ability.png" />
+                <div class="fft-cell">
+                    <img src="~/img/primary_ability.png" />
+                </div>
+                <div class="fft-cell">
+                    <img src="~/img/primary_ability.png" />
+                </div>
+                <div class="fft-cell">
+                    <img src="~/img/reaction_ability.png" />
+                </div>
+                <div class="fft-cell">
+                    <img src="~/img/support_ability.png" />
+                </div>
+                <div class="fft-cell">
+                    <img src="~/img/movement_ability.png" />
+                </div>
+            </div>
+            <div id="unit-ability-names" class="fft-column">
+                <div class="fft-cell">
+                    <strong>@UnitDetails.PrimaryAbilityName</strong>
+                </div>
+                <div class="fft-cell"></div>
+                <div class="fft-cell">
+                    <strong></strong>
+                </div>
+                <div class="fft-cell">
+                    <strong></strong>
+                </div>
+                <div class="fft-cell">
+                    <strong></strong>
+                </div>
+            </div>
+        </div>
+    </div>-->
+}
+
+@code {
+
+    [Parameter]
+    public int UnitIndex { get; set; }
+    public UnitDetailsViewModel UnitDetails { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        UnitDetails = (await javascriptService.GetUnitDataAsync())[UnitIndex];
+        UnitDetails = await dataAccessService.GetUnitStatsDetailDataAsync(UnitDetails);
+    }
+}

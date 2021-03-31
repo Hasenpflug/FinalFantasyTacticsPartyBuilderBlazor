@@ -1,0 +1,84 @@
+﻿@using FinalFantasyTacticsPartyBuilderBlazor.ViewModels
+
+    <div id="job-tree-container" class="menu">
+        <strong id="job-tree-close" @onclick="CloseJobTreeCallback">X</strong>
+        @foreach (JobTreantNodeViewModel node in Jobs)
+        {
+            int nameCount = node.JobPrerequisiteNames?.Count ?? 0;
+            <div id="@node.IdentifierName-job-node" class="job-treant-node-container fft-tooltip">
+                @if (nameCount > 0)
+                {
+                    <span class="fft-tooltip-container top">
+                        Required<br>@if (!String.IsNullOrEmpty(node.RequiredGender))
+                        {@node.RequiredGender <br>}
+                        @for (int i = 0; i < nameCount; i++)
+                        {
+                            @node.JobPrerequisiteNames[i]
+                            @if (i != nameCount - 1)
+                            {<br>}
+                        }
+                    </span>
+                }
+
+                <img src="@node.ImagePath"><p>@node.JobName</p>
+            </div>
+        }
+        <div id="squire-knight-job-branch" class="job-branch">
+            <div class="job-branch-arm basic-branch"></div>
+            <div class="job-branch-point basic-branch"></div>
+            <div class="job-branch-circle">
+                <img src="/img/number_2.png" />
+            </div>
+        </div>
+        <div id="squire-archer-job-branch" class="job-branch">
+            <div class="job-branch-arm basic-branch"></div>
+            <div class="job-branch-point basic-branch"></div>
+            <div class="job-branch-circle">
+                <img src="/img/number_2.png" />
+            </div>
+        </div>
+        <div id="knight-samurai-job-branch" class="job-branch">
+            <div class="job-branch-arm basic-branch"></div>
+            <div class="job-branch-point basic-branch"></div>
+            <div class="job-branch-circle">
+                <img src="/img/number_4.png" />
+            </div>
+        </div>
+        <div id="knight-monk-job-branch" class="job-branch">
+            <div class="job-branch-arm basic-branch"></div>
+            <div class="job-branch-point basic-branch"></div>
+            <div class="job-branch-circle">
+                <img src="/img/number_3.png" />
+            </div>
+        </div>
+        <div id="archer-thief-job-branch" class="job-branch">
+            <div class="job-branch-arm basic-branch"></div>
+            <div class="job-branch-point basic-branch"></div>
+            <div class="job-branch-circle">
+                <img src="/img/number_3.png" />
+            </div>
+        </div>
+        <div id="archer-ninja-job-branch" class="job-branch">
+            <div class="job-branch-arm basic-branch"></div>
+            <div class="job-branch-point basic-branch"></div>
+            <div class="job-branch-circle">
+                <img src="/img/number_4.png" />
+            </div>
+        </div>
+        <div id="monk-samurai-job-branch" class="job-branch">
+            <div class="job-branch-arm basic-branch"></div>
+            <div class="job-branch-point basic-branch"></div>
+            <div class="job-branch-circle">
+                <img src="/img/number_5.png" />
+            </div>
+        </div>
+    </div>
+
+@code {
+
+    [Parameter]
+    public List<JobTreantNodeViewModel> Jobs { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> CloseJobTreeCallback { get; set; }
+}

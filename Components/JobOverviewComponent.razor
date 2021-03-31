@@ -1,0 +1,91 @@
+﻿@using FinalFantasyTacticsPartyBuilderBlazor.Services
+@using FinalFantasyTacticsPartyBuilderBlazor.ViewModels
+
+@page "/newunit"
+@inject JavascriptService javascriptService
+@inject DataAccessService dataAccessService
+@inject NavigationManager navigationManager
+
+
+<div id="job-overview-container">
+    <a id="navigator-previous" href="/">
+        <img src="/img/return.svg" />
+    </a>
+    <JobSelectionComponent @ref="jobSelectionComponent" Jobs="Jobs" />
+    <div id="job-details-container" class="menu">
+        <div id="job-details-level-container">
+            <img src="/img/level.png" />
+            <img src="/img/number_1.png" />
+        </div>
+        <span id="job-name">Squire</span>
+    </div>
+    <div id="job-gender-container" class="menu">
+        <span id="gender-male-button" class="fft-button" @onclick="async() => await ChangeGenderAsync(Enums.Gender.Male)" selected="@(Gender == Enums.Gender.Male ? "true" : "false")">Male</span>
+        <span id="gender-female-button" class="fft-button" @onclick="async () => await ChangeGenderAsync(Enums.Gender.Female)" selected="@(Gender == Enums.Gender.Female ? "true" : "false")">Female</span>
+    </div>
+    <div id="job-confirm-container" class="menu">
+        <button id="job-tree-button" class="fft-button" selected="false" @onclick="ToggleDisplayJobTree">Job Tree</button>
+        <button id="job-confirm-button" class="fft-button" selected="false" @onclick="HireUnitAsync">Hire Unit</button>
+    </div>
+    <div id="job-modifier-chart-container" class="menu job-chart-container">
+        <canvas id="job-modifier-chart"></canvas>
+    </div>
+    <div id="job-growth-chart-container" class="menu job-chart-container">
+        <canvas id="job-growth-chart"></canvas>
+    </div>
+    <div id="job-move-chart-container" class="menu job-chart-container">
+        <canvas id="job-move-chart"></canvas>
+    </div>
+    <div id="job-evasion-chart-container" class="menu job-chart-container">
+        <canvas id="job-evasion-chart"></canvas>
+    </div>
+    @if (shouldDisplayJobTree)
+    {
+        <JobTreeComponent Jobs="JobTreeNodes" CloseJobTreeCallback="ToggleDisplayJobTree"/>
+    }
+</div>
+
+
+@code {
+
+    public List<JobOverviewViewModel> Jobs;
+    public List<JobTreantNodeViewModel> JobTreeNodes;
+    private Enums.Gender Gender = Enums.Gender.Male;
+    public bool shouldRefreshJobWheel = false;
+    private bool shouldDisplayJobTree = false;
+    private JobSelectionComponent jobSelectionComponent;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Jobs = await dataAccessService.GetJobSelectionDataAsync((int)Gender);
+    }
+
+    public async Task ChangeGenderAsync(Enums.Gender genderID)
+    {
+        if (genderID != Gender)
+        {
+            Gender = genderID;
+            jobSelectionComponent.SetSelectedJobGender(genderID);
+            Jobs = await dataAccessService.GetJobSelectionDataAsync((int)Gender);
+        }
+    }
+
+    public async Task HireUnitAsync()
+    {
+        int nextUnitPosition = (await javascriptService.GetUnitDataAsync())?.Count ?? 0;
+        SelectedJobDataViewModel selectedJobData = jobSelectionComponent.GetSelectedJobData();
+        UnitDetailsViewModel unit = await dataAccessService.PopulateNewUnitDataAsync(selectedJobData.JobID, selectedJobData.GenderID, nextUnitPosition);
+        await javascriptService.AddUnitDataAsync(unit);
+        navigationManager.NavigateTo("/");
+    }
+
+    public async Task ToggleDisplayJobTree()
+    {
+        if (!shouldDisplayJobTree && JobTreeNodes == null)
+        {
+            JobTreeNodes = await dataAccessService.GetJobTreeDataAsync(Enum.GetName(typeof(Enums.Gender), Gender));
+        }
+
+        shouldDisplayJobTree = !shouldDisplayJobTree;
+    }
+}

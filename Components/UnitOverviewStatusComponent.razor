@@ -1,0 +1,82 @@
+﻿@using FinalFantasyTacticsPartyBuilderBlazor.ViewModels
+
+@if (Unit != null)
+{
+    <div class="unit-details-container">
+        <div id="unit-portrait-menu" class="menu">
+            <img class="unit-portrait" src="@Unit.JobPortraitPath" />
+        </div>
+        <div id="unit-details-status-container">
+            <div id="unit-status-level-container">
+                <img src="/img/level.png" />
+                <img src="/img/number_@(Unit.AttributeDigits.LevelDigits[0]).png" />
+                <img src="/img/number_@(Unit.AttributeDigits.LevelDigits[1]).png" />
+            </div>
+            <div id="unit-status-experience-container">
+                <img src="/img/experience.png" />
+                <img src="/img/number_@(Unit.AttributeDigits.ExperienceDigits[0]).png" />
+                <img src="/img/number_@(Unit.AttributeDigits.ExperienceDigits[1]).png" />
+            </div>
+            <div class="job-status-container">
+                <div class="job-status-hp-container">
+                    <div class="hp-bar"></div>
+                    <img class="hp" src="/img/hp.png" />
+                    <div class="upper-hp-values-container">
+                        @for (int j = 0; j < Unit.AttributeDigits.HpDigits.Length; j++)
+                        {
+                            <img class="value upper-hp" src="/img/number_@(Unit.AttributeDigits.HpDigits[j]).png" />
+                        }
+                    </div>
+                    <img class="job-status-divider" src="/img/divider.png" />
+                    <div class="lower-hp-values-container">
+                        @for (int j = 0; j < Unit.AttributeDigits.HpDigits.Length; j++)
+                        {
+                            <img class="value lower-hp" src="/img/number_@(Unit.AttributeDigits.HpDigits[j]).png" />
+                        }
+                    </div>
+                </div>
+                <div class="job-status-mp-container">
+                    <div class="mp-bar"></div>
+                    <img class="mp" src="/img/mp.png" />
+                    <div class="upper-mp-values-container">
+                        @for (int j = 0; j < Unit.AttributeDigits.MpDigits.Length; j++)
+                        {
+                            <img class="value upper-mp" src="/img/number_@(Unit.AttributeDigits.MpDigits[j]).png" />
+                        }
+                    </div>
+                    <img class="job-status-divider" src="/img/divider.png" />
+                    <div class="lower-mp-values-container">
+                        @for (int j = 0; j < Unit.AttributeDigits.MpDigits.Length; j++)
+                        {
+                            <img class="value lower-mp" src="/img/number_@(Unit.AttributeDigits.MpDigits[j]).png" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="unit-details-name-container menu">
+            <img class="job-blue-orb" src="/img/blue_orb.png" />
+            <div id="unit-details-rank-container">
+                <img src="/img/number_dark_@(Unit.AttributeDigits.PositionDigits[0]).png" />
+                <img src="/img/number_dark_@(Unit.AttributeDigits.PositionDigits[1]).png" />
+            </div>
+            <strong id="unit-details-name">@Unit.UnitName</strong>
+            <strong id="unit-details-job">@Unit.JobName</strong>
+            <div id="unit-details-brave-container">
+                <span id="brave-header">Brave</span>
+                <span>@Unit.Brave</span>
+            </div>
+            <div id="unit-details-faith-container">
+                <span id="faith-header">Faith</span>
+                <span>@Unit.Faith</span>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public UnitOverviewViewModel Unit { get; set; }
+
+}

@@ -1,0 +1,1506 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+.body-content {
+    width: 100%;
+    height: 100%;
+    background-image: url(../img/party_builder_background.png);
+}
+
+img {
+    vertical-align: text-top;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+#party-overview-container {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+#party-builder-container {
+    width: 100%;
+    height: 100%;    
+}
+
+#navigator-previous {
+    position: fixed;
+    width: 15%;
+    background-color: rgba(0, 0, 0, 0.25);
+    z-index: 110;
+    max-width: 50px;
+}
+
+    #navigator-previous:hover {
+        background-color: rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+    }
+
+        #navigator-previous:hover svg polyline {
+            stroke: rgba(0, 0, 0, 1) !important;
+        }
+
+.menu {
+    width: 100%;
+    background-image: url(../img/menu_background.png);
+    border: 2px solid black;
+    box-shadow: black 3px 3px 3px;
+    font: 20vw 'Altima';
+}
+
+    .menu ul {
+        margin-top: 5%;
+        margin-bottom: 5%;
+        padding-left: 5%;
+    }
+
+    .menu li {
+        margin-bottom: 5%;
+        list-style: none;
+        line-height: 50%;
+    }
+
+        .menu li a {
+            color: inherit;
+            text-decoration: none;
+            text-shadow: 2px 2px 15px grey;
+        }
+
+        .menu li:hover {
+            position: relative;
+        }
+
+            .menu li:hover:before {
+                content: url(../img/menu_cursor.png);
+                position: absolute;
+                left: -40px;
+                bottom: 5px;
+            }
+
+.menu-container img {
+    width: 30%;
+}
+
+.job-blue-orb {
+    border-radius: 50%;
+    background-color: transparent;
+    box-shadow: 1px 1px 20px white;
+}
+
+.selection-square {
+    display: none;
+}
+
+#empty-unit-outline {
+    border: 5px dashed black;
+    border-radius: 50%;
+    width: 40%;
+    height: 80%;
+    margin: auto;
+}
+
+#new-unit-cross-container {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 75%;
+    margin: auto;
+}
+
+.unit-container {
+    height: 25%;
+}
+
+.job-image {
+    margin: auto;
+    display: block;
+    height: 50%;
+    z-index: 5;
+    position: relative;
+}
+
+.job-status-container {
+    margin: auto;
+    width: 75%;
+    height: 40%;
+}
+
+    .job-status-container img {
+        height: 25px;
+        z-index: 5;
+    }
+
+.job-status-hp-container, .job-status-mp-container {
+    height: 45%;
+    width: 80%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 40px 40% 60px 1px 15px 60px;
+    grid-template-rows: 40% 40%;
+}
+
+    .job-status-hp-container > .job-status-divider {
+        grid-area: 2 / 5 / 2 / 5;
+    }
+
+.upper-hp-values-container {
+    grid-area: 1 / 3 / 2 / 3;
+    justify-self: end;
+}
+
+    .upper-hp-values-container .value {
+        position: relative;
+        display: inline-grid;
+    }
+
+.hp {
+    grid-area: 1 / 1 / 1 / 1;
+}
+
+.lower-hp-values-container {
+    grid-area: 2 / 6 / 2 / 6;
+    justify-self: start;
+}
+
+    .lower-hp-values-container .value {
+        display: inline-grid;
+    }
+
+.hp-bar {
+    border-top: 3px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    background: linear-gradient(to right, darkGreen, turquoise);
+    transform: skewX(-20deg);
+    grid-area: 2 / 1 / 2 / 5;
+    z-index: 5;
+}
+
+.mp {
+    grid-area: 1 / 1 / 1 / 1;
+}
+
+.upper-mp-values-container {
+    grid-area: 1 / 3 / 2 / 3;
+    justify-self: end;
+}
+
+    .upper-mp-values-container .value {
+        position: relative;
+        display: inline-grid;
+    }
+
+.lower-mp-values-container {
+    grid-area: 2 / 6 / 2 / 6;
+    justify-self: start;
+}
+
+    .lower-mp-values-container .value {
+        display: inline-grid;
+    }
+
+.job-status-mp-container > .job-status-divider {
+    grid-area: 2 / 4 / 2 / 4;
+}
+
+.mp-bar {
+    border-top: 3px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    background: linear-gradient(to right, #ba5000, orange);
+    transform: skewX(-20deg);
+    grid-area: 2 / 1 / 2 / 4;
+    z-index: 5;
+}
+
+.unit-details-container {
+    display: grid;
+    grid-template-columns: 45% 50%;
+    grid-column-gap: 5%;
+    position: fixed;
+    left: 5%;
+    top: 55%;
+    width: 90%;
+    z-index: 9;
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 3000px 3000px rgba(0, 0, 0, 0.5);
+}
+
+#unit-portrait-menu {
+    width: 100%;
+    font-size: 0;
+}
+
+.unit-portrait {
+    height: 100%;
+    width: 100%;
+}
+
+#unit-details-status-container {
+    display: none;
+    width: 30%;
+    grid-template-columns: 10% 15% 25% 5% 10% 15% 5% 15%;
+    grid-template-rows: 20% 80%;
+}
+
+#unit-status-level-container {
+    grid-area: 1 / 3 / 1 / 6;
+}
+
+#unit-status-experience-container {
+    grid-area: 1 / 6 / 1 / 9;
+}
+
+#unit-details-status-container .job-status-container {
+    width: 100%;
+    height: 100%;
+    grid-area: 2 / 1 / 2 / 9;
+}
+
+#unit-details-status-container > .job-status-container > .job-status-hp-container, #unit-details-status-container > .job-status-container .job-status-mp-container {
+    margin: 0;
+}
+
+.unit-details-name-container {
+    box-sizing: border-box;
+    font-size: 10vw;
+    width: 100%;
+    padding: 3%;
+}
+
+#unit-details-rank-container {
+    display: inline;
+}
+
+    #unit-details-rank-container img {
+        height: 20px;
+    }
+
+#unit-details-job {
+    display: block;
+}
+
+#unit-details-brave-container {
+    top: 55%;
+    left: 20%;
+    width: auto;
+}
+
+#unit-details-faith-container {
+    left: 20%;
+    top: 75%;
+    width: auto;
+}
+
+.menu-container {
+    position: fixed;
+    left: 5%;
+    top: 0;
+    width: 90%;
+    height: auto;
+    z-index: 10;
+}
+
+#unit-dismiss-container {
+    position: fixed;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 60%;
+    background-color: rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0 3000px 3000px rgba(0, 0, 0, 0.25);
+    z-index: 100;
+}
+
+#dismiss-portrait-container {
+    width: inherit;
+    padding: 5%;
+}
+
+#dismiss-name {
+    color: darkred;
+    font-size: 20vw;
+}
+
+#dismiss-portrait {
+    float: right;
+    width: 30%;
+}
+
+#dismiss-quote {
+    margin: auto;
+    display: block;
+    font-size: 12vw;
+}
+
+#dismiss-confirmation-container {
+    position: fixed;
+    width: 60%;
+    margin: 5% 15%;
+}
+
+    #dismiss-confirmation-container span {
+        margin: 0 20%;
+    }
+
+#job-overview-container {
+    display: grid;
+    grid-template-columns: 10% 20% 20% 5% 20% 20% 5%;
+    grid-template-rows: 1.25% 25% 1.25% 10% 25% 1.25% 10% 25% 1.25%;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#job-selection-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    bottom: 340px;
+    grid-area: 1 / 1 / 9 / 9;
+    transition: transform 0.5s;
+}
+
+.job-selection-node {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform-origin: 100% 100%;
+}
+
+    .job-selection-node img {
+        position: absolute;
+        height: 120px;
+        width: 60px;
+        margin: 25px;
+        transition: transform 0.5s;
+    }
+
+#job-modifier-chart-container, #job-move-chart-container, #job-evasion-chart-container, #job-growth-chart-container {
+    padding: 5%;
+    box-sizing: border-box;
+}
+
+#job-modifier-chart-container {
+    grid-area: 2 / 2 / 2 / 4;
+    font-size: 5vw;
+}
+
+#job-move-chart-container {
+    grid-area: 2 / 5 / 2 / 7;
+}
+
+#job-growth-chart-container {
+    grid-area: 8 / 2 / 9 / 4;
+}
+
+#job-evasion-chart-container {
+    grid-area: 8 / 5 / 9 / 7;
+}
+
+#job-gender-container {
+    display: flex;
+    grid-area: 6 / 2 / 8 / 4;
+    padding: 1%;
+    box-sizing: border-box;
+    font-size: 0;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+#job-gender-container .fft-button {
+    font: 7vw 'Altima';
+    width: 40%;
+}
+
+#job-confirm-container {
+    display: flex;
+    grid-area: 6 / 5 / 8 / 7;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+    #job-confirm-container .fft-button {
+        font: 7vw 'Altima';
+    }
+
+#job-details-container {
+    grid-area: 4 / 3 / 5 / 6;
+}
+
+#job-details-level-container {
+    font-size: 0;
+    text-align: center;
+    padding: 1%
+}
+
+    #job-details-level-container img {
+        margin: 0 5px;
+    }
+
+#job-name {
+    display: block;
+    font-size: 12vw;
+    text-align: center;
+}
+
+.fft-button {
+    padding: 1%;
+}
+
+    .fft-button:hover {
+        cursor: pointer;
+    }
+
+        .fft-button:hover:before {
+            content: url(/img/menu_cursor.png);
+            position: absolute;
+            left: -2vw;
+        }
+
+    .fft-button[selected=true] {
+        background-color: rgba(0, 0, 0, 0.10);
+        border: 1vw inset;
+    }
+
+    .fft-button[selected=false] {
+        background-color: rgba(0, 0, 0, 0.00);
+        border: 1vw outset;
+    }
+
+#job-tree-container {
+    overflow: auto;
+    position: absolute;
+    width: 1800px;
+    height: 900px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+}
+
+.job-treant-node-container img {
+    height: 80px;
+    display: block;
+    margin: auto;
+}
+
+.job-treant-node-container p {
+    margin: 0;
+}
+
+.fft-tooltip {
+    position: absolute;
+}
+
+    .fft-tooltip .fft-tooltip-container {
+        white-space: nowrap;
+        font-size: 30px;
+        visibility: hidden;
+        background-color: black;
+        color: white;
+        text-align: center;
+        padding: 5px;
+        border-radius: 10px;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%);
+        z-index: 1;
+    }
+
+        .fft-tooltip .fft-tooltip-container.bottom {
+            top: 100%;
+        }
+
+        .fft-tooltip .fft-tooltip-container.top {
+            bottom: 100%;
+        }
+
+    .fft-tooltip:hover .fft-tooltip-container {
+        visibility: visible;
+    }
+
+#squire-job-node {
+    top: 25px;
+    left: 350px;
+}
+
+#knight-job-node {
+    top: 175px;
+    left: 150px;
+}
+
+#archer-job-node {
+    top: 175px;
+    left: 550px;
+}
+
+#samurai-job-node {
+    top: 325px;
+    left: 50px;
+}
+
+#thief-job-node {
+    top: 325px;
+    left: 450px;
+}
+
+#monk-job-node {
+    top: 325px;
+    left: 250px;
+}
+
+#ninja-job-node {
+    top: 325px;
+    left: 650px;
+}
+
+#dragoon-job-node {
+    top: 475px;
+    left: 230px;
+}
+
+#geomancer-job-node {
+    top: 475px;
+    left: 415px;
+}
+
+#dancer-job-node {
+    top: 625px;
+    left: 330px;
+}
+
+#chemist-job-node {
+    top: 25px;
+    left: 1250px;
+}
+
+#whitemage-job-node {
+    top: 175px;
+    left: 1050px;
+}
+
+#blackmage-job-node {
+    top: 175px;
+    left: 1450px;
+}
+
+#mystic-job-node {
+    top: 325px;
+    left: 950px;
+}
+
+#arithmetician-job-node {
+    top: 325px;
+    left: 1225px;
+}
+
+#timemage-job-node {
+    top: 325px;
+    left: 1550px;
+}
+
+#orator-job-node {
+    top: 475px;
+    left: 1075px;
+}
+
+#summoner-job-node {
+    top: 475px;
+    left: 1460px;
+}
+
+#bard-job-node {
+    top: 625px;
+    left: 1275px;
+}
+
+#onionknight-job-node {
+    left: 775px;
+    top: 125px
+}
+
+#mime-job-node {
+    top: 625px;
+    left: 800px;
+}
+
+#darkknight-job-node {
+    top: 750px;
+    left: 1625px;
+}
+
+.job-branch {
+    display: flex;
+    width: 150px;
+    height: 20px;
+}
+
+.job-branch-arm {
+    margin: 5px 0;
+    width: 100%;
+    height: 10px;
+    background: black;
+}
+
+.job-branch-point {
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-left: 20px solid black;
+    border-bottom: 10px solid transparent;
+}
+
+.job-branch-circle {
+    position: absolute;
+    left: 50%;
+    top: -20px;
+    border: 8px solid black;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    z-index: 10;
+    background-image: url(../img/menu_background.png);
+    transform: translate(-50%);
+}
+
+    .job-branch-circle img {
+        position: absolute;
+        width: 50%;
+        margin: 50% 50%;
+        transform: translate(-50%, -50%);
+    }
+
+#squire-knight-job-branch {
+    position: absolute;
+    left: 200px;
+    top: 150px;
+    transform: rotate(135deg);
+}
+
+    #squire-knight-job-branch img {
+        transform: translate(-50%, -50%) rotate(-135deg);
+    }
+
+#squire-archer-job-branch {
+    position: absolute;
+    left: 420px;
+    top: 150px;
+    transform: rotate(45deg);
+}
+
+    #squire-archer-job-branch img {
+        transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+#knight-samurai-job-branch {
+    position: absolute;
+    width: 100px;
+    left: 60px;
+    top: 270px;
+    transform: rotate(115deg);
+}
+
+    #knight-samurai-job-branch img {
+        transform: translate(-50%, -50%) rotate(-115deg);
+    }
+
+#knight-monk-job-branch {
+    position: absolute;
+    width: 100px;
+    left: 225px;
+    top: 220px;
+    transform: rotate(0);
+}
+
+    #knight-monk-job-branch img {
+        transform: translate(-50%, -50%) rotate(0);
+    }
+
+#monk-samurai-job-branch {
+    position: absolute;
+    width: 120px;
+    left: 125px;
+    top: 350px;
+    transform: rotate(180deg);
+}
+
+    #monk-samurai-job-branch img {
+        transform: translate(-50%, -50%) rotate(-180deg);
+    }
+
+#job-tree-close {
+    position: fixed;
+    right: 10%;
+    top: 5%;
+    transform: translate(0, 50%);
+    z-index: 9001;
+}
+
+.job-overview-scroll-indicator {
+    z-index: 900001;
+    position: fixed;
+    display: block;
+    visibility: hidden;
+}
+
+#job-overview-scroll-right {
+    visibility: visible;
+    height: 70%;
+    width: 10%;
+    top: 20%;
+    left: 85%;
+}
+
+#job-overview-scroll-bottom {
+    visibility: visible;
+    height: 2.5%;
+    width: 70%;
+    left: 15%;
+    top: 90%;
+}
+
+#job-overview-scroll-top {
+    height: 2.5%;
+    width: 70%;
+    left: 15%;
+    top: 6%;
+}
+
+#job-overview-scroll-left {
+    height: 70%;
+    width: 5%;
+    left: 5%;
+    top: 20%;
+}
+
+#item-details-container {
+    top: 5%;
+    height: 90%;
+    overflow: scroll;
+}
+
+#item-details-power-boost-container {
+    width: 80%;
+    margin: 0 10%;
+}
+
+#unit-details-container {
+    display: grid;
+    grid-row-gap: 2.5%;
+    position: relative;
+    left: 5%;
+    top: 2.5%;
+    width: 90%;
+}
+
+    #unit-details-container .unit-details-container {
+        height: auto;
+        top: 1%;
+        background-color: rgba(0, 0, 0, 0);
+        box-shadow: none;
+        position: static;
+        width: 100%;
+    }
+
+#unit-details-stats-container {
+    display: grid;
+    grid-template-columns: 30% 70%;
+}
+
+#base-stats-container {
+    display: grid;
+    grid-template-columns: 55% 25% 20%;
+}
+
+#weapon-stats-container {
+    display: grid;
+    grid-template-columns: 10% 10% 25% 10% 25% 20%;
+    grid-template-rows: 34% 33% 33%;
+    grid-auto-flow: row;
+}
+
+#weapon-stats-header {
+    grid-column-start: 1;
+    grid-column-end: 7;
+    text-align: center;
+}
+
+#unit-details-overall-stats {
+    font: 10vw 'Altima';
+    padding: 1%;
+    box-sizing: border-box;
+}
+
+#equipment-stats-container {
+    display: grid;
+    grid-template-columns: 7.5% 10% 7.5% 10% 7.5% 7.5% 10% 7.5% 7.5% 10% 7.5%;
+    text-align: center;
+}
+
+#equipment-stats-at {
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+
+#equipment-stats-cev {
+    grid-column-start: 4;
+    grid-column-end: 5;
+}
+
+#equipment-stats-sev {
+    grid-column-start: 7;
+    grid-column-end: 8;
+}
+
+#equipment-stats-aev {
+    grid-column-start: 10;
+    grid-column-end: 12;
+}
+
+#equipment-stats-container img {
+    margin: auto;
+}
+
+#damage-resist-container {
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+    grid-template-rows: 20% 40% 40%;
+    grid-auto-flow: row;
+}
+ #damage-resist-container .fft-tooltip {
+     position: static;
+     width: 50%;
+     margin: auto;
+ }
+    #damage-resist-container .fft-tooltip img {
+        height: 32px;
+        margin: auto;
+    }
+
+#damage-resistances-header {
+    text-align: center;
+    grid-column-start: 1;
+    grid-column-end: 7;
+}
+
+#damage-resistances-first-row {
+    grid-column-start: 1;
+}
+
+#damage-resistances-second-row {
+    grid-column-start: 1;
+}
+
+#status-immunities-container {
+    display: grid;
+    grid-template-columns: 11% 11% 11% 11% 11% 11% 11% 11% 11%;
+    grid-template-rows: 20% 40% 40%;
+    grid-auto-flow: row;
+}
+
+    #status-immunities-container .fft-tooltip {
+        position: static;
+        width: 50%;
+        margin: auto;
+    }
+
+    #status-immunities-container .fft-tooltip img {
+        height: 32px;
+    }
+
+#status-immunities-header {
+    text-align: center;
+    grid-column-start: 1;
+    grid-column-end: 11;
+}
+
+#status-immunities-first-row {
+    grid-column-start: 1;
+}
+
+#status-immunities-second-row {
+    grid-column-start: 1;
+}
+
+#unit-equipment-slot-icons, #unit-equipment-item-icons {
+    position: relative;
+    width: 15%;
+}
+
+    #unit-equipment-slot-icons .fft-cell, #unit-equipment-item-icons .fft-cell {
+        margin: 2vh auto;
+    }
+
+        #unit-equipment-slot-icons .fft-cell img, #unit-equipment-item-icons .fft-cell img {
+            margin: auto;
+        }
+
+
+#unit-equipment-item-names {
+    width: 50%;
+    font-size: 15vw;
+}
+
+    #unit-equipment-item-names .fft-cell {
+        width: 100%;
+        margin: 2vh auto;
+        vertical-align: middle;
+        line-height: 45px;
+    }
+
+#item-selection-icon-background {
+    width: 15%;
+}
+
+#item-selection .fft-row {
+    font-size: 7vw;
+    height: 6vh;
+}
+
+#item-selection .item-icon {
+    width: 10%;
+    height: 100%;
+}
+
+#item-selection .type-icon {
+    width: 5%;
+}
+
+#item-selection .item-names {
+    width: 30%;
+}
+
+.item-category img {
+    margin: auto;
+}
+
+.fft-button:hover:before {
+    content: none;
+}
+
+#unit-ability-equipment-container {
+    display: none;
+    height: auto;
+}
+
+#equip-icon {
+    width: 100%
+}
+
+.not-implemented a {
+    opacity: 0.3;
+    cursor: default !important;
+}
+
+
+.not-implemented:before {
+    content: ' ' !important;
+}
+
+
+@media screen and (min-width: 500px) and (max-width:1000px) {
+    #party-builder-container {
+        display: grid;
+        grid-template-columns: 34% 33% 34%;
+        grid-auto-rows: 20%;
+        grid-auto-flow: row;
+    }
+
+    .unit-container {
+        height: 100%;
+    }
+
+    .menu {
+        font-size: 5vw;
+    }
+
+    .menu-container {
+        position: relative;
+        font-size: 3vw;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+    }
+
+    .unit-details-container {
+        height: 25%;
+        box-shadow: 0 0 30px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    #unit-portrait-menu {
+        width: 30%;
+        height: 100%;
+    }
+
+    .unit-portrait {
+        display: block;
+        height: 100%;
+    }
+
+    #unit-details-status-container {
+        display: grid;
+        float: left;
+        width: 35%;
+        margin: 5% 1%;
+    }
+
+    .unit-details-name-container {
+        width: 25%;
+    }
+
+    #dismiss-portrait-container span, #dismiss-confirmation-container span {
+        font-size: 10vw;
+    }
+
+    #dismiss-confirmation-container span {
+        display: block;
+        text-align: center;
+    }
+
+    
+}
+
+@media screen and (min-width: 1000px) {
+
+    #party-overview-container {
+        width: 99%;
+        height: 99%;
+        padding: 1%;
+    }
+
+    #party-builder-container {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-columns: 20% 20% 20% 20% 20%;
+        grid-auto-rows: 25%;
+        grid-auto-flow: row;
+    }
+
+    .selection-square {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 80%;
+        visibility: hidden;
+        z-index: 1;
+    }
+
+    .unit-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+        .unit-container:hover {
+            cursor: pointer;
+        }
+
+            .unit-container:hover > .selection-square {
+                visibility: visible;
+            }
+
+    .job-status-container {
+        width: 100%;
+        margin: 0;
+    }
+
+    .job-status-hp-container, .job-status-mp-container {
+        margin: 0;
+    }
+
+    .menu-container {
+        position: relative;
+        z-index: 10;
+    }
+
+    .menu {
+        width: 100%;
+        background-image: url(../img/menu_background.png);
+        border: 2px solid black;
+        box-shadow: black 3px 3px 3px;
+        font: 50px 'Altima';
+    }
+
+        .menu ul {
+            margin-top: 5%;
+            margin-bottom: 5%;
+            padding-left: 5%;
+        }
+
+        .menu li {
+            margin-bottom: 5%;
+            list-style: none;
+            line-height: 50%;
+        }
+
+            .menu li a {
+                color: inherit;
+                text-decoration: none;
+                text-shadow: 2px 2px 15px grey;
+            }
+
+            .menu li:hover {
+                position: relative;
+            }
+
+                .menu li:hover:before {
+                    content: url(../img/menu_cursor.png);
+                    position: absolute;
+                    left: -40px;
+                    bottom: 5px;
+                }
+
+    .menu-container img {
+        width: 30%;
+    }
+
+    .unit-details-container {
+        height: 30%;
+        box-shadow: 0 0 20px 20px rgba(0, 0, 0, 0.5);
+        padding: 2%;
+        display: flex;
+        align-items: center;
+        left: 2.5%;
+        top: 55%;
+    }
+
+    #unit-portrait-menu {
+        float: none;
+        display: inline-block;
+        width: 15%;
+        height: 100%;
+    }
+
+    #unit-details-status-container {
+        display: inline-grid;
+        width: 30%;
+        height: 50%;
+        margin: 0 1%;
+        grid-template-columns: 15% 15% 30% 30% 10%;
+        grid-template-rows: 30% 70%;
+    }
+
+    #unit-status-level-container {
+        grid-area: 1 / 3 / 1 / 4;
+    }
+
+        #unit-status-level-container img, #unit-status-experience-container img {
+            height: 25px;
+        }
+
+    #unit-status-experience-container {
+        grid-area: 1 / 4 / 1 / 7;
+    }
+
+    .unit-details-name-container {
+        display: inline-block;
+        float: none;
+        width: 30%;
+        height: 100%;
+        padding: 1%;
+        box-sizing: border-box;
+    }
+
+    #unit-details-name-orb {
+        position: absolute;
+        top: 8%;
+        left: 3%;
+        width: 5%;
+        border-radius: 50%;
+        background-color: transparent;
+        box-shadow: 1px 1px 20px white;
+    }
+
+    #unit-details-name-rank-container {
+        position: absolute;
+        top: 10%;
+        left: 10%;
+    }
+
+        #unit-details-name-rank-container img {
+            height: 16px;
+            background-color: rgba(0, 0, 0, 0.10);
+            box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+            #unit-details-name-rank-container img:last-of-type {
+                margin-left: -25%;
+            }
+
+    #unit-details-name-name {
+        position: absolute;
+        top: 5%;
+        left: 18%;
+    }
+
+    #unit-details-name-job {
+        position: absolute;
+        top: 35%;
+        left: 18%;
+    }
+
+    #unit-details-name-brave-container {
+        position: absolute;
+        left: 18%;
+        top: 70%;
+        width: 35%;
+    }
+
+    #unit-details-name-faith-container {
+        position: absolute;
+        left: 50%;
+        top: 70%;
+        width: 35%;
+    }
+
+    #unit-dismiss-container {
+        position: fixed;
+        top: 20%;
+        left: 0;
+        width: 100%;
+        height: auto;
+        z-index: 20;
+        background-color: rgba(0, 0, 0, 0.25);
+        box-shadow: 0 0 3000px 3000px rgba(0, 0, 0, 0.25);
+    }
+
+    #dismiss-portrait-container {
+        position: relative;
+        margin: auto;
+        width: 40%;
+        padding: 1%;
+        margin-bottom: 1%;
+    }
+
+    #dismiss-name {
+        margin: 1%;
+        font-size: 3vw;
+    }
+
+    #dismiss-quote {
+        display: block;
+        margin: 1%;
+        width: 80%;
+        font-size: 3vw;
+    }
+
+    #dismiss-portrait {
+        float: right;
+        width: 20%;
+    }
+
+    #dismiss-confirmation-container {
+        position: static;
+        width: 10%;
+        height: 15%;
+        margin: auto;
+        text-align: center;
+    }
+
+        #dismiss-confirmation-container span {
+            vertical-align: middle;
+        }
+
+            #dismiss-confirmation-container span:hover {
+                cursor: pointer;
+            }
+
+                #dismiss-confirmation-container span:hover:before {
+                    content: url(img/menu_cursor.png);
+                    position: absolute;
+                    left: -40px;
+                    bottom: 5px;
+                }
+
+    #job-overview-container {
+        display: grid;
+        grid-template-columns: 5% 25% 1% 10% 1% 15% 1% 20% 1% 20%;
+        grid-template-rows: 40% 10% 30% 10% 10%;
+        width: 100%;
+        height: 100%;
+    }
+
+    #job-selection-container {
+        position: relative;
+        top: 0;
+        left: 0;
+        grid-area: 1 / 3 / 4 / 9;
+    }
+
+    .job-selection-node img {
+        margin: 10px;
+    }
+
+    #unit-details-job-container {
+        position: absolute;
+        left: 5%;
+        top: 10%;
+    }
+
+    #job-details-container {
+        grid-area: 4 / 4 / 4 / 5;
+        font-size: 0;
+    }
+
+    #job-name {
+        font-size: 3vw;
+    }
+
+    .fft-button {
+        position: relative;
+        padding: 1%;
+        border: 5px outset;
+    }
+
+        .fft-button:hover {
+            cursor: pointer;
+        }
+
+            .fft-button:hover:before {
+                content: url(/img/menu_cursor.png);
+                position: absolute;
+                left: -2vw;
+            }
+
+        .fft-button[selected=true] {
+            background-color: rgba(0, 0, 0, 0.10);
+            border: 0.25vw inset;
+        }
+
+        .fft-button[selected=false] {
+            background-color: rgba(0, 0, 0, 0.00);
+            border: 0.25vw outset;
+        }
+
+    #job-gender-container {
+        grid-area: 4 / 6 / 4 / 7;
+        padding: 2.5%;
+    }
+
+        #job-gender-container .fft-button {
+            font: 3vw 'Altima';
+            margin: 5%;
+        }
+
+    #job-confirm-container {
+        grid-area: 4 / 8 / 4 / 8;
+    }
+
+        #job-confirm-container .fft-button {
+            font: 3vw 'Altima';
+            margin: 5%;
+        }
+
+    #job-modifier-chart-container {
+        grid-area: 1 / 2 / 2 / 3;
+    }
+
+    #job-growth-chart-container {
+        grid-area: 3 / 2 / 5 / 3;
+    }
+
+    #job-move-chart-container {
+        grid-area: 1 / 10 / 2 / 11;
+    }
+
+    #job-evasion-chart-container {
+        grid-area: 3 / 10 / 5 / 11;
+    }
+
+    #unit-details-container {
+        width: 95%;
+        margin: auto;
+        position: static;
+    }
+
+    #unit-details-container .unit-details-container {
+        margin: auto;        
+        max-width: 1500px;
+    }
+
+    #unit-details-overall-stats {
+        font-size: 3vw;
+    }
+
+    #unit-details-stats-container {
+        display: inline-grid;
+        width: 30%;
+        grid-template-columns: 30% 70%;
+        grid-column-gap: 2.5%;
+    }
+
+    #equipment-stats-container {
+        display: inline-grid;
+        width: 25%;
+        grid-template-columns: 8% 11% 8% 11% 8% 8% 11% 8% 8% 11% 8%;
+    }
+
+    #damage-resist-container {
+        display: inline-grid;
+        width: 20%;
+    }
+
+    .invisible {
+        visibility: hidden;
+    }
+
+    #status-immunities-container {
+        display: inline-grid;
+        width: 22%;
+    }
+
+        #status-immunities-container .fft-tooltip img {
+            height: 32px;
+            margin: auto;
+        }
+
+    .job-overview-scroll-indicator {
+        display: none;
+    }
+}
+
+/* required LIB STYLES */
+/* .Treant se automatski dodaje na svaki chart conatiner */
+.Treant { position: relative; overflow: hidden; padding: 0 !important; }
+.Treant > .node,
+.Treant > .pseudo { position: absolute; display: block; visibility: hidden; }
+.Treant.Treant-loaded .node,
+.Treant.Treant-loaded .pseudo { visibility: visible; }
+.Treant > .pseudo { width: 0; height: 0; border: none; padding: 0; }
+.Treant .collapse-switch { width: 3px; height: 3px; display: block; border: 1px solid black; position: absolute; top: 1px; right: 1px; cursor: pointer; }
+.Treant .collapsed .collapse-switch { background-color: #868DEE; }
+.Treant > .node img {	border: none; float: left; }
+/* Webfont CSS setup for Altima by Caveras */
+
+@font-face {
+	font-family:'Altima';
+		src:url('../fonts/Altima.eot');
+		src:url('../fonts/Altima.eot?#iefix') format('embedded-opentype'),
+				url('../fonts/Altima.woff') format('woff'),
+				url('../fonts/Altima.ttf') format('truetype'),
+				url('../fonts/Altima.svg#Altima') format('svg');
+	font-weight:normal;
+	font-style:normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    @font-face {
+        font-family: 'Altima';
+        src: url('../fonts/Altima.svg') format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+}
